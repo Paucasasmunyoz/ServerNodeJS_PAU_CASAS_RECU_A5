@@ -1,6 +1,9 @@
 const express = require('express')
 const cors = require('cors')
 const app = express();
+const fs1 = require('node:fs')
+const stream = require('stream')
+
 
 app.use(cors());
 app.use(express.json());
@@ -8,10 +11,12 @@ port = 3080;
 
 
 
+
  var admin = require("firebase-admin");
 
- var serviceAccount = require("./usuaris-7c36f-firebase-adminsdk-8kw70-5abce7ec5f.json");
+ var serviceAccount = require('./usuaris-7c36f-firebase-adminsdk-8kw70-5abce7ec5f.json');
  const {getFirestore} = require("firebase-admin/firestore");
+
 
  admin.initializeApp({
      credential: admin.credential.cert(serviceAccount)
@@ -73,13 +78,6 @@ app.get('/pass', cors(),async (req,res)=>{
 app.listen(port,() => {
     console.log('Server listening on the port: '+ port);
 });
-
-
-
-
-
-
-
 
 
 
