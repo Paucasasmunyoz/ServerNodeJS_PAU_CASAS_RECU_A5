@@ -163,7 +163,10 @@ app.post('/log/inici/sessioCorrecte',(req , res) =>{
     console.log("inici de sessio correcte")
 });
 
-
+app.post('/log/contacte',(req , res) =>{
+    fs1.writeFileSync("logs",req.body.text,{flag:'a+'})
+    console.log("consulta contacte")
+});
 
 
 
@@ -261,11 +264,13 @@ app.get('/imatges/logo',async (req, res)=>{
 
 //FORMULARI
 const uuid = require('uuid');
+const bodyParser = require('body-parser');
 app.post('/contacte',(req, res) => {
+
     const nombreArchivo = `${uuid.v4()}.txt`;
     var {nombre, correo, mensaje}=req.body;
     var text="nombre: "+ nombre +"\n"+"correo: "+correo+"\n"+"mensaje: "+mensaje;
-    const escriure=fs.createWriteStream(nombreArchivo)
+    const escriure=fs1.createWriteStream(nombreArchivo)
     escriure.write(text)
     res.send('Archivo creado exitosamente');
 })
