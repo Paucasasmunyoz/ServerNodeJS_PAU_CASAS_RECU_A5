@@ -10,10 +10,6 @@ port = 3080;
 
 let connexio_BD;
 
-fs1.writeFile('logs', '', (err) => {
-    if (err) throw err;
-    console.log('Fitxer logs buits');
-});
 
 fs1.readFile('connexioBD', 'utf8', function (err, data) {
     if (err) throw err;
