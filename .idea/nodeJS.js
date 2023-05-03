@@ -281,7 +281,7 @@ app.get('/imatges/logo',async (req, res)=>{
     res.sendFile(__dirname + "\\imatges\\imagen.png")
 })
 
-
+//
 
 //FORMULARI
 const uuid = require('uuid');
