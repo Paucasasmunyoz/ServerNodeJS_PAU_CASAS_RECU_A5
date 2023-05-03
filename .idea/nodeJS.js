@@ -3,6 +3,8 @@ const cors = require('cors')
 const app = express();
 const fs1 = require('node:fs')
 const stream = require('stream')
+const mysql = require('mysql2')
+const Sequelize = require('sequelize')
 
 //prova
 app.use(cors());
@@ -10,6 +12,7 @@ app.use(express.json());
 port = 3080;
 
 let connexio_BD;
+let conexioMySQL;
 
 
 fs1.readFile('connexioBD', 'utf8', function (err, data) {
@@ -18,6 +21,25 @@ fs1.readFile('connexioBD', 'utf8', function (err, data) {
     console.log(connexio_BD)
     console.log('Connexió feta')
 });
+
+
+
+//Connexió MYSQL
+const configObj = JSON.parse(fs1.readFileSync('ConnexioBD_MySQL', 'utf8'));
+
+const connexioMySQL = mysql.createConnection({
+    database : configObj.database,
+    user : configObj.username,
+    password : configObj.password,
+    host : configObj.host,
+
+});
+
+connexioMySQL.connect((err) => {
+    if (err) throw err;
+    console.log('Connexió MySQL realitzada');
+});
+
 
 
 
@@ -35,6 +57,8 @@ function connexio(){
         });
     }
 }
+
+
 
 
 
@@ -272,20 +296,34 @@ app.post('/contacte',(req, res) => {
     res.send('Archivo creado exitosamente');
 })
 
+app.get('/imatges/:nom',(req,res)=>{
+    const nomImatge = req.params.nom;
+    const rutaImatge = `${__dirname}/imatges/${nomImatge}`;
+    const stream = fs1.createReadStream(rutaImatge);
+    stream.pipe(res);
+});
 
 
-//modifcar dades
-// app.put('/registre', cors(),(req,res) => {
-//     const usuari = {
-//         'nom': req.body.nom,
-//         'cognom': req.body.cognom,
-//         'telefon': req.body.telefon,
-//         'email': req.body.email,
-//         'passw': req.body.passw
-//     };
-//     db.collection('ProjecteLEA').doc(req.body.email).set(usuari);
-//     console.log(usuari)
-// });
+app.get('/productes', (req, res)=>{
+    connexioMySQL.query('SELECT * FROM botigaprjmarcpau.productes', (error, results)=>{
+        if (error) throw error;
+        res.send(results);
+        console.log(results)
+    })
+})
+
+app.post('/afegir_prod_hist', (req, res)=>{
+    const query = req.body.query;
+    const values = req.body.values;
+    connexioMySQL.query(query,values,(err, result)=>{
+        if (err){
+            res.status(500).send(`Error: ${err}`)
+        }else{
+            res.send(`Fet`)
+        }
+    })
+})
+
 
 
 
