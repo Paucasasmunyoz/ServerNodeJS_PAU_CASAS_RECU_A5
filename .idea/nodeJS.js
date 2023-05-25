@@ -326,4 +326,74 @@ app.post('/afegir_prod_hist', (req, res)=>{
 
 
 
+const ventas = [
+    {fecha: '2023-05-01', producto: 'proteína', cantidad: 10},
+    {fecha: '2023-05-01', producto: 'creatina', cantidad: 5},
+    {fecha: '2023-05-02', producto: 'proteína', cantidad: 15},
+    {fecha: '2023-05-02', producto: 'creatina', cantidad: 3},
+    // ...
+];
+
+const request = require('request');
+const muscle = 'biceps';
+
+request.get({
+    url: 'https://api.api-ninjas.com/v1/exercises?muscle=' + muscle,
+    headers: {
+        'X-Api-Key': 'p54TSoh1BhHzyLd8ctAxBw==4TTGqeAHbHBRh2xo'
+    },
+}, function(error, response, body) {
+    if (error) {
+        console.error('Request failed:', error);
+        return;
+    }
+
+    if (response.statusCode !== 200) {
+        console.error('Error:', response.statusCode, body.toString('utf8'));
+        return;
+    }
+
+    try {
+        const exercises = JSON.parse(body);
+
+        // Obtener solo los nombres de los ejercicios
+        const exerciseNames = exercises.map(exercise => exercise.name);
+
+        console.log('Nombres de ejercicios:', exerciseNames);
+    } catch (error) {
+        console.error('Error al analizar la respuesta JSON:', error);
+    }
+});
+
+const muscle2 = 'triceps' ;
+
+request.get({
+    url: 'https://api.api-ninjas.com/v1/exercises?muscle=' + muscle2,
+    headers: {
+        'X-Api-Key': 'p54TSoh1BhHzyLd8ctAxBw==4TTGqeAHbHBRh2xo'
+    },
+}, function(error, response, body) {
+    if (error) {
+        console.error('Request failed:', error);
+        return;
+    }
+
+    if (response.statusCode !== 200) {
+        console.error('Error:', response.statusCode, body.toString('utf8'));
+        return;
+    }
+
+    try {
+        const exercises = JSON.parse(body);
+
+        // Obtener solo los nombres de los ejercicios
+        const exerciseNames = exercises.map(exercise => exercise.name);
+
+        console.log('Nombres de ejercicios:', exerciseNames);
+    } catch (error) {
+        console.error('Error al analizar la respuesta JSON:', error);
+    }
+});
+
+
 
