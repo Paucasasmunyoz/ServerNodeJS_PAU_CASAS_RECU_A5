@@ -312,7 +312,7 @@ app.get('/productes', (req, res)=>{
     })
 })
 
-app.post('/afegir_prod_hist', (req, res)=>{
+app.post('/afegir_prod_histo', (req, res)=>{
     const query = req.body.query;
     const values = req.body.values;
     connexioMySQL.query(query,values,(err, result)=>{
@@ -323,6 +323,66 @@ app.post('/afegir_prod_hist', (req, res)=>{
         }
     })
 })
+
+
+
+
+const request = require('request');
+const muscle = 'biceps';
+
+request.get({
+    url: 'https://api.api-ninjas.com/v1/exercises?muscle=' + muscle,
+    headers: {
+        'X-Api-Key': 'p54TSoh1BhHzyLd8ctAxBw==4TTGqeAHbHBRh2xo'
+    },
+}, function(error, response, body) {
+    if (error) {
+        console.error('Request failed:', error);
+        return;
+    }
+
+    if (response.statusCode !== 200) {
+        console.error('Error:', response.statusCode, body.toString('utf8'));
+        return;
+    }
+
+    try {
+        const exercises = JSON.parse(body);
+        const exerciseNames = exercises.map(exercise => exercise.name);
+
+        console.log('Nombres de ejercicios:', exerciseNames);
+    } catch (error) {
+        console.error('Error al analizar la respuesta JSON:', error);
+    }
+});
+
+const muscle2 = 'triceps' ;
+
+request.get({
+    url: 'https://api.api-ninjas.com/v1/exercises?muscle=' + muscle2,
+    headers: {
+        'X-Api-Key': 'p54TSoh1BhHzyLd8ctAxBw==4TTGqeAHbHBRh2xo'
+    },
+}, function(error, response, body) {
+    if (error) {
+        console.error('Request failed:', error);
+        return;
+    }
+
+    if (response.statusCode !== 200) {
+        console.error('Error:', response.statusCode, body.toString('utf8'));
+        return;
+    }
+
+    try {
+        const exercises = JSON.parse(body);
+        const exerciseNames = exercises.map(exercise => exercise.name);
+
+        console.log('Nombres de ejercicios:', exerciseNames);
+    } catch (error) {
+        console.error('Error al analizar la respuesta JSON:', error);
+    }
+});
 
 
 
