@@ -1,6 +1,6 @@
 {
-  "database": "universitat",
+  "database": "botigaprjmarcpau",
   "username": "root",
-  "password": "admin123",
+  "password": "patata",
   "host": "localhost"
 }
