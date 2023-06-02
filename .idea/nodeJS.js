@@ -7,7 +7,7 @@ const { getFirestore } = require('firebase-admin/firestore');
 const admin = require('firebase-admin');
 const nodemailer = require('nodemailer');
 const axios = require('axios');
-
+const { v4: uuidv4 } = require('uuid');
 
 app.use(cors());
 app.use(express.json());
@@ -217,6 +217,38 @@ app.put('/usuarios/:email', cors(), async (req, res) => {
     }
 });
 
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'admin123',
+    database: 'botigaprjmarcpau'
+});
+
+
+app.post('/agregar-producto', (req, res) => {
+    const producto = req.body;
+
+    // Validar que el nombre no sea nulo o vacío
+    if (!producto.nom || producto.nom.trim() === '') {
+        return res.status(400).json({ message: 'El nombre del producto es obligatorio' });
+    }
+
+    const id = uuidv4();
+    const sql = 'INSERT INTO productesafegits (nom, preu, imatge) VALUES (?, ?, ?)';
+    const values = [producto.nom, producto.preu, producto.imatge];
+
+    connection.query(sql, values, (error, result) => {
+        if (error) {
+            console.error('Error al agregar el producto:', error);
+            return res.status(500).json({ message: 'Error al agregar el producto' });
+        }
+
+        res.status(201).json({ message: 'Producto agregado correctamente' });
+    });
+});
+
+
+
 
 
 
@@ -388,6 +420,10 @@ app.get('/imatges/pagos4',async (req, res)=>{
 
 app.get('/imatges/logo',async (req, res)=>{
     res.sendFile(__dirname + "\\imatges\\imagen.png")
+})
+
+app.get('/imatges/roids',async (req, res)=>{
+    res.sendFile(__dirname + "\\imatges\\roids.png")
 })
 
 //
